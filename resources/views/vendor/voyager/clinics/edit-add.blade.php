@@ -1,4 +1,4 @@
-@php
+
 @php
     $edit = !is_null($dataTypeContent->getKey());
     $add  = is_null($dataTypeContent->getKey());
@@ -20,44 +20,46 @@
     @include('voyager::multilingual.language-selector')
 @stop
 
-
 @section('content')
-    <div class="page-content container-fluid">
-        <form class="form-edit-add" role="form"
-              action="@if(!is_null($dataTypeContent->getKey())){{ route('voyager.'.$dataType->slug.'.update', $dataTypeContent->getKey()) }}@else{{ route('voyager.'.$dataType->slug.'.store') }}@endif"
-              method="POST" enctype="multipart/form-data" autocomplete="off">
-            <!-- PUT Method if we are editing -->
-            @if(isset($dataTypeContent->id))
-                {{ method_field("PUT") }}
-            @endif
-            {{ csrf_field() }}
+    <div class="page-content edit-add container-fluid">
+        <div class="row">
+            <div class="col-md-12">
 
-            <div class="row">
-
-                <div class="col-md-8">
-                    <div class="panel panel-bordered">
-                    {{-- <div class="panel"> --}}
-                        @if (count($errors) > 0)
-                            <div class="alert alert-danger">
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
+                <div class="panel panel-bordered">
+                    <!-- form start -->
+                    <form role="form"
+                            class="form-edit-add"
+                            action="{{ $edit ? route('voyager.'.$dataType->slug.'.update', $dataTypeContent->getKey()) : route('voyager.'.$dataType->slug.'.store') }}"
+                            method="POST" enctype="multipart/form-data">
+                        <!-- PUT Method if we are editing -->
+                        @if($edit)
+                            {{ method_field("PUT") }}
                         @endif
+
+                        <!-- CSRF TOKEN -->
+                        {{ csrf_field() }}
 
                         <div class="panel-body">
 
+                            @if (count($errors) > 0)
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+
+                            <!-- Adding / Editing -->
                             @php
                                 $dataTypeRows = $dataType->{($edit ? 'editRows' : 'addRows' )};
-                                $exclude = ['image','entry_id','recept_id']; 
+                                $exclude = ['country_id','city_id','district_id','commune_id','village_id']; 
                             @endphp
-
 
                             @foreach($dataTypeRows as $row)
                                 @if(!in_array($row->field, $exclude))
-
+                                
                                     <!-- GET THE DISPLAY OPTIONS -->
                                     @php
                                         $display_options = $row->details->display ?? NULL;
@@ -90,76 +92,58 @@
                                             @endforeach
                                         @endif
                                     </div>
-                                    
-                                @endif
-                            @endforeach    
-                        
-                    
-                        </div>
-                    </div>
-                </div>
+                                @endif    
+                            @endforeach
 
-                <div class="col-md-4">
-                    <!-- ### IMAGE ### -->
-                    <div class="panel panel-bordered panel-primary">
-                        <div class="panel-heading">
-                            <h3 class="panel-title"><i class="icon wb-image"></i> Patient Image</h3>
-                            <div class="panel-actions">
-                                <a class="panel-action voyager-angle-down" data-toggle="panel-collapse" aria-hidden="true"></a>
-                            </div>
-                        </div>
-                        <div class="panel-body">
-                            @if(isset($dataTypeContent->image))
-                                <img src="{{ filter_var($dataTypeContent->image, FILTER_VALIDATE_URL) ? $dataTypeContent->image : Voyager::image( $dataTypeContent->image ) }}" style="width:100%" />
-                            @endif
-                            <input type="file" name="image">
-                        </div>
-                    </div>
+                            @include('partials.province.dropdown')
 
+                        </div><!-- panel-body -->
 
-                    <div class="panel panel-bordered panel-info">
-                            <div class="panel-heading">
-                                <h3 class="panel-title"><i class="icon wb-search"></i> Registration Content</h3>
-                                <div class="panel-actions">
-                                    <a class="panel-action voyager-angle-down" data-toggle="panel-collapse" aria-hidden="true"></a>
-                                </div>
-                            </div>
-                            <div class="panel-body">
-                                <div class="form-group">
-                                <label for="entry_id">Entry By</label>
-                                @include('voyager::multilingual.input-hidden', [
-                                    '_field_name'  => 'entry_id',
-                                    //'_field_trans' => get_field_translations($dataTypeContent, 'slug')
-                                ])
-                                <input type="text" class="form-control" id="entry_id" name="entry_id"
-                                    placeholder="Entry By"
-                                    {!! isFieldSlugAutoGenerator($dataType, $dataTypeContent, "slug") !!}
-                                    value="{{ $dataTypeContent->slug ?? '' }}">
-                            </div>
-                            </div>
+                        <div class="panel-footer">
+                            @section('submit-buttons')
+                                <button type="submit" class="btn btn-primary save">{{ __('voyager::generic.save') }}</button>
+                            @stop
+                            @yield('submit-buttons')
                         </div>
-                    </div>
+                    </form>
+
+                    <iframe id="form_target" name="form_target" style="display:none"></iframe>
+                    <form id="my_form" action="{{ route('voyager.upload') }}" target="form_target" method="post"
+                            enctype="multipart/form-data" style="width:0;height:0;overflow:hidden">
+                        <input name="image" id="upload_file" type="file"
+                                 onchange="$('#my_form').submit();this.value='';">
+                        <input type="hidden" name="type_slug" id="type_slug" value="{{ $dataType->slug }}">
+                        {{ csrf_field() }}
+                    </form>
 
                 </div>
-
             </div>
-    
-            <button type="submit" class="btn btn-primary pull-right save">
-                {{ __('voyager::generic.save') }}
-            </button>
-
-
-        </form>
-
-        <iframe id="form_target" name="form_target" style="display:none"></iframe>
-        <form id="my_form" action="{{ route('voyager.upload') }}" target="form_target" method="post" enctype="multipart/form-data" style="width:0px;height:0;overflow:hidden">
-            {{ csrf_field() }}
-            <input name="image" id="upload_file" type="file" onchange="$('#my_form').submit();this.value='';">
-            <input type="hidden" name="type_slug" id="type_slug" value="{{ $dataType->slug }}">
-        </form>
+        </div>
     </div>
-@stop
 
+    <div class="modal fade modal-danger" id="confirm_delete_modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"><i class="voyager-warning"></i> {{ __('voyager::generic.are_you_sure') }}</h4>
+                </div>
+
+                <div class="modal-body">
+                    <h4>{{ __('voyager::generic.are_you_sure_delete') }} '<span class="confirm_delete_name"></span>'</h4>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ __('voyager::generic.cancel') }}</button>
+                    <button type="button" class="btn btn-danger" id="confirm_delete">{{ __('voyager::generic.delete_confirm') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Delete File Modal -->
+@stop
 
 @section('javascript')
     <script>
@@ -227,5 +211,5 @@
             });
             $('[data-toggle="tooltip"]').tooltip();
         });
-    </script>
+    </script> 
 @stop

@@ -16,6 +16,12 @@ Route::get('/', function () {
 });
 
 
+Route::get('province','ProvinceController@countries');
+Route::get('json-cities/{id}','ProvinceController@cities');
+Route::get('json-districts/{id}','ProvinceController@districts');
+Route::get('json-communes/{id}','ProvinceController@communes');
+Route::get('json-villages/{id}','ProvinceController@villages');
+
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
 });

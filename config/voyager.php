@@ -144,9 +144,9 @@ return [
         ],
 
         'widgets' => [
-            'App\\Widgets\\Clinics',
+            //'App\\Widgets\\Clinics',
             'TCG\\Voyager\\Widgets\\UserDimmer',
-            'App\\Widgets\\Patients',
+            //'App\\Widgets\\Patients',
         ],
 
     ],
