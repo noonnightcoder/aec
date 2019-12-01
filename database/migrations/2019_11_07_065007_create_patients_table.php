@@ -21,7 +21,8 @@ class CreatePatientsTable extends Migration
             $table->date('date_of_brith');
             $table->date('age_at_registration');
             $table->string('gender',1);
-            $table->integer('national_id');
+            $table->string('nationality',32);
+            $table->integer('referral_id')->nullable();
             $table->integer('clinic_id');
             $table->string('phone1',32)->nullable();
             $table->string('phone2',32)->nullable();
@@ -33,6 +34,10 @@ class CreatePatientsTable extends Migration
             $table->integer('district_id')->nullable();
             $table->integer('city_id')->nullable();
             $table->integer('country_id')->nullable();
+            $table->integer('entry_id')->nullable();
+            $table->integer('receptionist_id')->nullable();
+            $table->string('deceased',2)->nullable();
+            $table->string('image')->nullable();
             $table->timestamps();
             $table->timestamp('delete_at')->nullable();
         });

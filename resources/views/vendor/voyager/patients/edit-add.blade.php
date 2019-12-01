@@ -1,5 +1,4 @@
 @php
-@php
     $edit = !is_null($dataTypeContent->getKey());
     $add  = is_null($dataTypeContent->getKey());
 @endphp
@@ -34,7 +33,7 @@
 
             <div class="row">
 
-                <div class="col-md-8">
+                <div class="col-md-7">
                     <div class="panel panel-bordered">
                     {{-- <div class="panel"> --}}
                         @if (count($errors) > 0)
@@ -51,9 +50,8 @@
 
                             @php
                                 $dataTypeRows = $dataType->{($edit ? 'editRows' : 'addRows' )};
-                                $exclude = ['image','entry_id','recept_id']; 
+                                $exclude = ['image','entrier','patient_belongsto_clinic_relationship','patient_belongsto_referral_relationship','patient_belongsto_user_relationship','patient_belongsto_user_relationship_1','city_id','district_id','cmmunue_id','village_id','country_id','registration_date','deceased']; 
                             @endphp
-
 
                             @foreach($dataTypeRows as $row)
                                 @if(!in_array($row->field, $exclude))
@@ -94,55 +92,52 @@
                                 @endif
                             @endforeach    
                         
+                            @include('partials.province.dropdown')
+
                     
                         </div>
                     </div>
                 </div>
 
-                <div class="col-md-4">
-                    <!-- ### IMAGE ### -->
+                <div class="col-md-5">
+                    
                     <div class="panel panel-bordered panel-primary">
-                        <div class="panel-heading">
-                            <h3 class="panel-title"><i class="icon wb-image"></i> Patient Image</h3>
-                            <div class="panel-actions">
-                                <a class="panel-action voyager-angle-down" data-toggle="panel-collapse" aria-hidden="true"></a>
-                            </div>
-                        </div>
+                       
                         <div class="panel-body">
-                            @if(isset($dataTypeContent->image))
-                                <img src="{{ filter_var($dataTypeContent->image, FILTER_VALIDATE_URL) ? $dataTypeContent->image : Voyager::image( $dataTypeContent->image ) }}" style="width:100%" />
-                            @endif
-                            <input type="file" name="image">
+
+                            @php
+                                $dataTypeRows = $dataType->{($edit ? 'editRows' : 'addRows' )};
+                                $exclude = ['family_name','given_name','date_of_birth','gender','phone1','phone2','address1','address2','email','country_id','city_id','district_id','communue_id','village_id','age_at_registration','nationality']; 
+                            @endphp
+
+
+                            @foreach($dataTypeRows as $row)
+                                @if(!in_array($row->field, $exclude))
+                                    @php
+                                        $display_options = $row->details->display ?? NULL;
+                                    @endphp
+                                    @if (isset($row->details->formfields_custom))
+                                        @include('voyager::formfields.custom.' . $row->details->formfields_custom)
+                                    @else
+                                        <div class="form-group @if($row->type == 'hidden') hidden @endif @if(isset($display_options->width)){{ 'col-md-' . $display_options->width }}@endif" @if(isset($display_options->id)){{ "id=$display_options->id" }}@endif>
+                                            {{ $row->slugify }}
+                                            <label for="name">{{ $row->getTranslatedAttribute('display_name') }}</label>
+                                            @include('voyager::multilingual.input-hidden-bread-edit-add')
+                                            @if($row->type == 'relationship')
+                                                @include('voyager::formfields.relationship', ['options' => $row->details])
+                                            @else
+                                                {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
+                                            @endif
+
+                                            @foreach (app('voyager')->afterFormFields($row, $dataType, $dataTypeContent) as $after)
+                                                {!! $after->handle($row, $dataType, $dataTypeContent) !!}
+                                            @endforeach
+                                        </div>
+                                    @endif
+                                @endif
+                            @endforeach
                         </div>
                     </div>
-
-
-                    <div class="panel panel-bordered panel-info">
-                            <div class="panel-heading">
-                                <h3 class="panel-title"><i class="icon wb-search"></i> Registration Content</h3>
-                                <div class="panel-actions">
-                                    <a class="panel-action voyager-angle-down" data-toggle="panel-collapse" aria-hidden="true"></a>
-                                </div>
-                            </div>
-                            <div class="panel-body">
-                                <div class="form-group">
-                                <label for="entry_id">Entry By</label>
-                                @include('voyager::multilingual.input-hidden', [
-                                    '_field_name'  => 'entry_id',
-                                    //'_field_trans' => get_field_translations($dataTypeContent, 'slug')
-                                ])
-                                <input type="text" class="form-control" id="entry_id" name="entry_id"
-                                    placeholder="Entry By"
-                                    {!! isFieldSlugAutoGenerator($dataType, $dataTypeContent, "slug") !!}
-                                    value="{{ $dataTypeContent->slug ?? '' }}">
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
     
             <button type="submit" class="btn btn-primary pull-right save">
                 {{ __('voyager::generic.save') }}
@@ -183,6 +178,15 @@
             $('#confirm_delete_modal').modal('show');
           };
         }
+
+        $('input[name="given_name"]').on('change',function() {
+                alert('change me');
+                //var dob = jQuery(this).val();
+                //dob = new Date(dob);
+                //var today = new Date();
+                //var age = Math.floor((today-dob) / (365.25 * 24 * 60 * 60 * 1000));
+                //$('input[name="age_at_registration"]').html(age+' years old');
+        });
 
         $('document').ready(function () {
             $('.toggleswitch').bootstrapToggle();
@@ -226,6 +230,7 @@
                 $('#confirm_delete_modal').modal('hide');
             });
             $('[data-toggle="tooltip"]').tooltip();
+
         });
     </script>
 @stop
