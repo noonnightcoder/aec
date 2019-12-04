@@ -15,7 +15,7 @@ class CreateRehabilitationsTable extends Migration
     {
         Schema::create('rehabilitations', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('rehabilitations_name',128);
+            $table->string('rehabilitation_name',128);
             $table->timestamps();
             $table->timestamp('delete_at')->nullable();
         });

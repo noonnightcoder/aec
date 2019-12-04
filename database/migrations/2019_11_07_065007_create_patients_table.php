@@ -18,9 +18,9 @@ class CreatePatientsTable extends Migration
             $table->date('registration_date');
             $table->string('family_name',128);
             $table->string('given_name',128);
-            $table->date('date_of_brith');
-            $table->date('age_at_registration');
-            $table->string('gender',1);
+            $table->date('date_of_birth');
+            $table->string('age_at_registration',16);
+            $table->string('gender',10);
             $table->string('nationality',32);
             $table->integer('referral_id')->nullable();
             $table->integer('clinic_id');

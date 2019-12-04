@@ -15,7 +15,7 @@ class CreateReferralsTable extends Migration
     {
         Schema::create('referrals', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('referral_code',16);
+            $table->string('referral_code',32);
             $table->string('referral_name',64);
             $table->integer('category_id')->unsigned();
             $table->timestamps();

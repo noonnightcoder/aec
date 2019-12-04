@@ -30,9 +30,8 @@ class CreateItemsTable extends Migration
             $table->string('sale_account_code',64)->nullable();
             $table->string('purchase_account_code',64)->nullable();
             $table->boolean('is_composite')->default(false);
-            $table->string('sku',64);
+            $table->string('sku',64)->nullable();;
             $table->integer('parent_item_id')->unsigned()->nullable();
-            $table->string('slug')->unique();
             $table->timestamps();
             $table->timestamp('delete_at')->nullable();
         });
