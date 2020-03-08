@@ -24,4 +24,6 @@ Route::get('json-villages/{id}','ProvinceController@villages');
 
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
+	Route::get('json-patient/{id}','GeneralController@patient');
+	Route::get('json-manufacturer/{id}','GeneralController@manufacturer');
 });
