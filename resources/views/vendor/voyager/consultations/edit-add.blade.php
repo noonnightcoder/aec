@@ -80,8 +80,12 @@
                                     @if (isset($row->details->legend) && isset($row->details->legend->text))
                                         <h3 class="col-xs-12" style="padding: 5px;">{{ $row->details->legend->text }}</h3>
                                     @endif
-
-                                    <div class="form-group @if($row->type == 'hidden') hidden @endif col-md-{{ $display_options->width ?? 12 }} {{ $errors->has($row->field) ? 'has-error' : '' }}" @if(isset($display_options->id)){{ "id=$display_options->id" }}@endif>
+									@php
+										$rel = $row->field;
+										if($row->type == 'relationship')
+											$rel = $row->details->column;
+									@endphp
+                                    <div class="form-group @if($row->type == 'hidden') hidden @endif col-md-{{ $display_options->width ?? 12 }} {{ $errors->has($rel) ? 'has-error' : '' }}" @if(isset($display_options->id)){{ "id=$display_options->id" }}@endif>
                                         {{ $row->slugify }}
                                         <label class="control-label" for="name">{{ $row->getTranslatedAttribute('display_name') }}
 										</label>
@@ -90,8 +94,10 @@
 										@if (isset($row->details->view))
                                             @include($row->details->view, ['row' => $row, 'dataType' => $dataType, 'dataTypeContent' => $dataTypeContent, 'content' => $dataTypeContent->{$row->field}, 'action' => ($edit ? 'edit' : 'add')])
                                         @elseif ($row->type == 'relationship')
+										
                                             @include('voyager::formfields.relationship', ['options' => $row->details])
                                         @else
+										
                                             {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
                                         @endif
 
@@ -100,9 +106,9 @@
 											
 
                                         @endforeach
-                                        @if ($errors->has($row->field))
-                                            @foreach ($errors->get($row->field) as $error)
-                                                <span class="help-block">{{ $error }}</span>
+                                        @if ($errors->has($rel))
+                                            @foreach ($errors->get($rel) as $error)
+                                               <!-- <span class="help-block">{{ $error }}</span>-->
                                             @endforeach
                                         @endif
 									
@@ -272,6 +278,7 @@
 					$('#family_name').val('');
 						$('#given_name').val('');
 						$('#referral_from').val('');
+						$('#age').val('');
 						
 					
 				if(id){
@@ -282,6 +289,7 @@
 						$('#family_name').val(r.family_name);
 						$('#given_name').val(r.given_name);
 						$('#referral_from').val(r.given_name);						
+						$('#age').val(r.age);						
 						}
 					});
 				}

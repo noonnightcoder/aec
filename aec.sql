@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 08, 2020 at 04:45 PM
+-- Generation Time: Mar 12, 2020 at 06:48 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.2.27
 
@@ -353,7 +353,10 @@ CREATE TABLE `consultations` (
 
 INSERT INTO `consultations` (`id`, `consultation_date`, `post_surgery`, `hearing_aid`, `note`, `manufacturer_r`, `manufacturer_l`, `condition_r`, `patient_id`, `lead_clinician_id`, `consultation_type`, `follow_up`, `referral`, `followup_date`, `fee`, `hearing_level_l`, `hearing_level_r`, `diagnosis_r`, `diagnosis_l`, `condition_l`) VALUES
 (12, '2020-03-19', 'yes', 'yes', NULL, '1', '4', '{\"old\":\"old\"}', 438, 1, 'Follow up patient', '1/12 Follow up', 'Child mental health', '2020-03-20', '778', 3, 3, NULL, NULL, '{\"new\":\"new\",\"old\":\"old\"}'),
-(13, NULL, 'yes', 'yes', NULL, '5', '3', '[]', 436, 5, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, NULL, '[]');
+(13, '2020-03-13', 'yes', 'yes', 'sas', '5', '3', '{\"old\":\"old\"}', 436, 5, 'Follow up patient', NULL, 'SLT', '2020-03-19', NULL, NULL, 2, NULL, NULL, '{\"recon\":\"recon\"}'),
+(14, '2020-03-20', 'yes', 'yes', 'asas', NULL, NULL, '{\"recon\":\"recon\"}', 435, 4, 'Follow up patient', NULL, 'SLT', NULL, NULL, NULL, NULL, NULL, NULL, '{\"old\":\"old\"}'),
+(15, '2020-03-13', 'yes', 'yes', 'adasd', NULL, NULL, '{\"old\":\"old\"}', 438, 4, 'Follow up patient', NULL, 'Child mental health', NULL, NULL, 4, 4, NULL, NULL, '{\"new\":\"new\"}'),
+(16, '2020-03-13', 'yes', 'yes', 'hi', '2', '2', '{\"old\":\"old\"}', 101, 3, 'Follow up patient', NULL, 'SLT', '2020-03-13', '778', 1, 2, NULL, NULL, '{\"new\":\"new\"}');
 
 -- --------------------------------------------------------
 
@@ -375,7 +378,10 @@ INSERT INTO `consultation_diagnosis_l` (`id`, `consultation_id`, `diagnosise_id`
 (1, 12, 2),
 (2, 12, 4),
 (3, 13, 2),
-(4, 13, 3);
+(4, 13, 3),
+(5, 14, 4),
+(6, 15, 3),
+(7, 16, 1);
 
 -- --------------------------------------------------------
 
@@ -396,7 +402,10 @@ CREATE TABLE `consultation_diagnosis_r` (
 INSERT INTO `consultation_diagnosis_r` (`id`, `consultation_id`, `diagnosise_id`) VALUES
 (1, 12, 2),
 (2, 12, 3),
-(3, 13, 2);
+(3, 13, 2),
+(4, 14, 2),
+(5, 15, 3),
+(6, 16, 1);
 
 -- --------------------------------------------------------
 
@@ -416,7 +425,10 @@ CREATE TABLE `consultation_hearing_assessments` (
 
 INSERT INTO `consultation_hearing_assessments` (`id`, `hearing_assessment_id`, `consultation_id`) VALUES
 (19, 3, 12),
-(20, 4, 12);
+(20, 4, 12),
+(21, 2, 15),
+(22, 2, 16),
+(23, 4, 16);
 
 -- --------------------------------------------------------
 
@@ -436,7 +448,11 @@ CREATE TABLE `consultation_rehabilitation` (
 
 INSERT INTO `consultation_rehabilitation` (`id`, `consultation_id`, `rehabilitation_id`) VALUES
 (10, 12, 3),
-(11, 13, 2);
+(11, 13, 2),
+(12, 14, 3),
+(13, 15, 3),
+(14, 15, 1),
+(15, 16, 2);
 
 -- --------------------------------------------------------
 
@@ -456,7 +472,10 @@ CREATE TABLE `consultation_treatment` (
 
 INSERT INTO `consultation_treatment` (`id`, `consultation_id`, `treatment_id`) VALUES
 (11, 12, 2),
-(12, 13, 2);
+(12, 13, 2),
+(13, 14, 2),
+(14, 15, 3),
+(15, 16, 2);
 
 -- --------------------------------------------------------
 
@@ -933,42 +952,42 @@ INSERT INTO `data_rows` (`id`, `data_type_id`, `field`, `type`, `display_name`, 
 (234, 35, 'created_at', 'timestamp', 'Created At', 0, 0, 0, 0, 0, 0, '{}', 9),
 (235, 35, 'updated_at', 'timestamp', 'Updated At', 0, 0, 0, 0, 0, 0, '{}', 10),
 (236, 40, 'id', 'text', 'Id', 1, 0, 0, 0, 0, 0, '{}', 1),
-(238, 40, 'consultation_date', 'date', 'Consultation Date', 0, 0, 1, 1, 1, 1, '{\"display\":{\"width\":\"3\"}}', 3),
-(243, 40, 'post_surgery', 'radio_btn', 'Post Surgery', 0, 0, 1, 1, 1, 1, '{\"default\":\"yes\",\"options\":{\"yes\":\"Yes\",\"no\":\"No\"},\"display\":{\"width\":\"6\"},\"legend\":{\"text\":\"Patient Visit History\"}}', 7),
-(244, 40, 'hearing_aid', 'radio_btn', 'Hearing Aid', 0, 0, 1, 1, 1, 1, '{\"default\":\"yes\",\"options\":{\"yes\":\"Yes (Before today)\",\"no\":\"No\"},\"display\":{\"width\":\"6\"}}', 9),
-(245, 40, 'note', 'text_area', 'Note', 0, 0, 1, 1, 1, 1, '{\"display\":{\"width\":\"6\"}}', 10),
+(238, 40, 'consultation_date', 'date', 'Consultation Date', 0, 0, 1, 1, 1, 1, '{\"display\":{\"width\":\"3\"},\"validation\":{\"rule\":\"required\"}}', 4),
+(243, 40, 'post_surgery', 'radio_btn', 'Post Surgery', 0, 0, 1, 1, 1, 1, '{\"default\":\"yes\",\"options\":{\"yes\":\"Yes\",\"no\":\"No\"},\"display\":{\"width\":\"6\"},\"legend\":{\"text\":\"Patient Visit History\"},\"validation\":{\"rule\":\"required\"}}', 8),
+(244, 40, 'hearing_aid', 'radio_btn', 'Hearing Aid', 0, 0, 1, 1, 1, 1, '{\"default\":\"yes\",\"options\":{\"yes\":\"Yes (Before today)\",\"no\":\"No\"},\"display\":{\"width\":\"6\"},\"validation\":{\"rule\":\"required\"}}', 10),
+(245, 40, 'note', 'text_area', 'Note', 0, 0, 1, 1, 1, 1, '{\"display\":{\"width\":\"6\"},\"validation\":{\"rule\":\"required\"}}', 11),
 (250, 40, 'manufacturer_r', 'text', 'Manufacturer R', 0, 0, 1, 1, 1, 1, '{\"display\":{\"width\":\"6\"},\"legend\":{\"text\":\"Hearing AID (FITTING)\"}}', 31),
 (251, 40, 'manufacturer_l', 'text', 'Manufacturer L', 0, 0, 1, 1, 1, 1, '{\"display\":{\"width\":\"6\",\"class\":\"hidden\"}}', 32),
-(255, 40, 'consultation_hasone_clinic_relationship', 'relationship', 'Clinics', 0, 0, 1, 1, 1, 1, '{\"display\":{\"width\":\"4\"},\"model\":\"App\\\\Clinic\",\"table\":\"clinics\",\"type\":\"belongsTo\",\"column\":\"id\",\"key\":\"id\",\"label\":\"clinic_name\",\"pivot_table\":\"brands\",\"pivot\":\"0\",\"taggable\":\"0\"}', 5),
-(257, 40, 'consultation_belongsto_hearing_assessment_relationship', 'relationship', 'Hearing Test (select up to 6)', 0, 0, 1, 1, 1, 1, '{\"display\":{\"width\":\"10\"},\"legend\":{\"text\":\"Test & Diagnosis\"},\"model\":\"App\\\\HearingAssessment\",\"table\":\"hearing_assessments\",\"type\":\"belongsToMany\",\"column\":\"id\",\"key\":\"id\",\"label\":\"hearing_assessment_name\",\"pivot_table\":\"consultation_hearing_assessments\",\"pivot\":\"1\",\"taggable\":\"0\"}', 11),
-(258, 40, 'consultation_belongsto_hearing_level_relationship', 'relationship', 'Hearing Levels R', 0, 0, 1, 1, 1, 1, '{\"display\":{\"width\":\"6\"},\"model\":\"App\\\\HearingLevel\",\"table\":\"hearing_levels\",\"type\":\"belongsTo\",\"column\":\"hearing_level_r\",\"key\":\"id\",\"label\":\"hearing_level_name\",\"pivot_table\":\"brands\",\"pivot\":\"0\",\"taggable\":\"0\"}', 12),
-(259, 40, 'consultation_belongstomany_treatment_relationship', 'relationship', 'Treatment', 0, 0, 1, 1, 1, 1, '{\"display\":{\"width\":\"3\"},\"model\":\"App\\\\Treatment\",\"table\":\"treatments\",\"type\":\"belongsToMany\",\"column\":\"id\",\"key\":\"id\",\"label\":\"treatment_name\",\"pivot_table\":\"consultation_treatment\",\"pivot\":\"1\",\"taggable\":\"0\"}', 16),
-(260, 40, 'consultation_belongstomany_rehabilitation_relationship', 'relationship', 'Rehabilitation', 0, 0, 1, 1, 1, 1, '{\"display\":{\"width\":\"3\"},\"model\":\"App\\\\Rehabilitation\",\"table\":\"rehabilitations\",\"type\":\"belongsToMany\",\"column\":\"id\",\"key\":\"id\",\"label\":\"rehabilitation_name\",\"pivot_table\":\"consultation_rehabilitation\",\"pivot\":\"1\",\"taggable\":\"0\"}', 17),
-(261, 40, 'consultation_belongsto_patient_relationship', 'relationship', 'Patient ID', 0, 1, 1, 1, 1, 1, '{\"display\":{\"width\":\"2\"},\"model\":\"App\\\\Patient\",\"table\":\"patients\",\"type\":\"belongsTo\",\"column\":\"patient_id\",\"key\":\"id\",\"label\":\"id\",\"pivot_table\":\"brands\",\"pivot\":\"0\",\"taggable\":\"0\"}', 2),
-(262, 40, 'patient_id', 'text', 'Patient Id', 0, 0, 1, 1, 1, 1, '{}', 28),
+(255, 40, 'consultation_hasone_clinic_relationship', 'relationship', 'Clinics', 0, 0, 1, 1, 1, 1, '{\"display\":{\"width\":\"4\"},\"model\":\"App\\\\Clinic\",\"table\":\"clinics\",\"type\":\"belongsTo\",\"column\":\"id\",\"key\":\"id\",\"label\":\"clinic_name\",\"pivot_table\":\"brands\",\"pivot\":\"0\",\"taggable\":\"0\"}', 6),
+(257, 40, 'consultation_belongsto_hearing_assessment_relationship', 'relationship', 'Hearing Test (select up to 6)', 0, 0, 1, 1, 1, 1, '{\"display\":{\"width\":\"10\"},\"legend\":{\"text\":\"Test & Diagnosis\"},\"validation\":{\"rule\":\"required\"},\"model\":\"App\\\\HearingAssessment\",\"table\":\"hearing_assessments\",\"type\":\"belongsToMany\",\"column\":\"id\",\"key\":\"id\",\"label\":\"hearing_assessment_name\",\"pivot_table\":\"consultation_hearing_assessments\",\"pivot\":\"1\",\"taggable\":\"0\"}', 12),
+(258, 40, 'consultation_belongsto_hearing_level_relationship', 'relationship', 'Hearing Levels R', 0, 0, 1, 1, 1, 1, '{\"display\":{\"width\":\"6\"},\"model\":\"App\\\\HearingLevel\",\"table\":\"hearing_levels\",\"type\":\"belongsTo\",\"column\":\"hearing_level_r\",\"key\":\"id\",\"label\":\"hearing_level_name\",\"pivot_table\":\"brands\",\"pivot\":\"0\",\"taggable\":\"0\"}', 13),
+(259, 40, 'consultation_belongstomany_treatment_relationship', 'relationship', 'Treatment', 0, 0, 1, 1, 1, 1, '{\"display\":{\"width\":\"11\"},\"validation\":{\"rule\":\"required\"},\"model\":\"App\\\\Treatment\",\"table\":\"treatments\",\"type\":\"belongsToMany\",\"column\":\"id\",\"key\":\"id\",\"label\":\"treatment_name\",\"pivot_table\":\"consultation_treatment\",\"pivot\":\"1\",\"taggable\":\"0\"}', 17),
+(260, 40, 'consultation_belongstomany_rehabilitation_relationship', 'relationship', 'Rehabilitation', 0, 0, 1, 1, 1, 1, '{\"display\":{\"width\":\"8\"},\"model\":\"App\\\\Rehabilitation\",\"table\":\"rehabilitations\",\"type\":\"belongsToMany\",\"column\":\"id\",\"key\":\"id\",\"label\":\"rehabilitation_name\",\"pivot_table\":\"consultation_rehabilitation\",\"pivot\":\"1\",\"taggable\":\"0\"}', 18),
+(261, 40, 'consultation_belongsto_patient_relationship', 'relationship', 'Patient IDs', 0, 1, 1, 1, 1, 1, '{\"display\":{\"width\":\"2\"},\"validation\":{\"rule\":\"required\"},\"model\":\"App\\\\Patient\",\"table\":\"patients\",\"type\":\"belongsTo\",\"column\":\"patient_id\",\"key\":\"id\",\"label\":\"id\",\"pivot_table\":\"brands\",\"pivot\":\"0\",\"taggable\":\"0\"}', 3),
+(262, 40, 'patient_id', 'hidden', 'Patient Id', 0, 0, 1, 1, 1, 1, '{}', 2),
 (263, 42, 'id', 'text', 'Id', 1, 0, 0, 0, 0, 0, '{}', 1),
 (265, 42, 'collection_date', 'date', 'Collection Date', 0, 1, 1, 1, 1, 1, '{}', 4),
 (266, 42, 'batteries', 'select_dropdown', 'Batteries', 0, 1, 1, 1, 1, 1, '{\"default\":\"yes\",\"options\":{\"yes\":\"Yes\",\"no\":\"No\"}}', 5),
 (267, 42, 'battery_belongsto_clinic_relationship', 'relationship', 'Clinics', 0, 1, 1, 1, 1, 1, '{\"model\":\"App\\\\Clinic\",\"table\":\"clinics\",\"type\":\"belongsTo\",\"column\":\"clinic_id\",\"key\":\"id\",\"label\":\"clinic_name\",\"pivot_table\":\"batteries\",\"pivot\":\"0\",\"taggable\":\"0\"}', 2),
 (268, 42, 'clinic_id', 'text', 'Clinic Id', 0, 1, 1, 1, 1, 1, '{}', 4),
-(269, 40, 'consultation_belongsto_user_relationship', 'relationship', 'Lead Clinician', 0, 1, 1, 1, 1, 1, '{\"display\":{\"width\":\"5\"},\"model\":\"App\\\\User\",\"table\":\"users\",\"type\":\"belongsTo\",\"column\":\"lead_clinician_id\",\"key\":\"id\",\"label\":\"name\",\"pivot_table\":\"batteries\",\"pivot\":\"0\",\"taggable\":\"0\"}', 4),
-(270, 40, 'lead_clinician_id', 'hidden', 'Lead Clinician Id', 0, 0, 1, 1, 1, 1, '{}', 8),
-(271, 40, 'consultation_type', 'select_dropdown', 'Consultation Type', 0, 0, 1, 1, 1, 1, '{\"default\":\"\",\"options\":{\"\":\"\",\"New patient\":\"New patient\",\"Follow up patient\":\"Follow up patient\"},\"display\":{\"width\":\"6\"}}', 6),
-(272, 40, 'consultation_belongsto_hearing_level_relationship_1', 'relationship', 'Hearing Levels L', 0, 0, 1, 1, 1, 1, '{\"display\":{\"width\":\"6\"},\"model\":\"App\\\\HearingLevel\",\"table\":\"hearing_levels\",\"type\":\"belongsTo\",\"column\":\"hearing_level_l\",\"key\":\"id\",\"label\":\"hearing_level_name\",\"pivot_table\":\"batteries\",\"pivot\":\"0\",\"taggable\":\"0\"}', 13),
-(273, 40, 'consultation_belongsto_diagnosise_relationship', 'relationship', 'Diagnosis R', 0, 1, 1, 1, 1, 1, '{\"display\":{\"width\":\"3\"},\"model\":\"App\\\\Diagnosise\",\"table\":\"diagnosises\",\"type\":\"belongsToMany\",\"column\":\"id\",\"key\":\"id\",\"label\":\"diagnosis_name\",\"pivot_table\":\"consultation_diagnosis_r\",\"pivot\":\"1\",\"taggable\":\"0\"}', 14),
-(274, 40, 'consultation_belongsto_diagnosise_relationship_1', 'relationship', 'Diagnosis L', 0, 1, 1, 1, 1, 1, '{\"display\":{\"width\":\"3\"},\"model\":\"App\\\\Diagnosise\",\"table\":\"diagnosises\",\"type\":\"belongsToMany\",\"column\":\"id\",\"key\":\"id\",\"label\":\"diagnosis_name\",\"pivot_table\":\"consultation_diagnosis_l\",\"pivot\":\"1\",\"taggable\":\"0\"}', 15),
-(275, 40, 'consultation_belongsto_item_relationship', 'relationship', 'Manufacter / Model R', 0, 1, 1, 1, 1, 1, '{\"display\":{\"width\":\"6\"},\"legend\":{\"text\":\"Hearing AID (FITTING)\"},\"model\":\"App\\\\Item\",\"table\":\"items\",\"type\":\"belongsTo\",\"column\":\"manufacturer_r\",\"key\":\"id\",\"label\":\"item_name\",\"pivot_table\":\"batteries\",\"pivot\":\"0\",\"taggable\":\"0\"}', 18),
-(276, 40, 'consultation_belongsto_item_relationship_1', 'relationship', 'Manufacter / Model L', 0, 1, 1, 1, 1, 1, '{\"display\":{\"width\":\"6\"},\"model\":\"App\\\\Item\",\"table\":\"items\",\"type\":\"belongsTo\",\"column\":\"manufacturer_l\",\"key\":\"id\",\"label\":\"item_name\",\"pivot_table\":\"batteries\",\"pivot\":\"0\",\"taggable\":\"0\"}', 19),
-(277, 40, 'follow_up', 'select_dropdown', 'Follow Up', 0, 0, 1, 1, 1, 1, '{\"default\":\"\",\"options\":{\"\":\"\",\"No follow up - no further action\":\"No follow up - no further action\",\"No follow up - resolved\":\"No follow up - resolved\",\"2\\/52 Follow up\":\"2\\/52 Follow up\",\"1\\/12 Follow up\":\"1\\/12 Follow up\",\"3\\/12 Follow up\":\"3\\/12 Follow up\",\"6\\/12 Follow up\":\"6\\/12 Follow up\"},\"display\":{\"width\":\"6\"},\"legend\":{\"text\":\"Followup \\/ Referral\"}}', 22),
-(278, 40, 'referral', 'select_dropdown', 'Referral', 0, 0, 1, 1, 1, 1, '{\"default\":\"\",\"options\":{\"\":\"\",\"No referral\":\"No referral\",\"ORL\":\"ORL\",\"ORL - regarding surgery\":\"ORL - regarding surgery\",\"SLT\":\"SLT\",\"Child mental health\":\"Child mental health\",\"Cleft lip\\/palate\":\"Cleft lip\\/palate\"},\"display\":{\"width\":\"6\"}}', 23),
-(279, 40, 'followup_date', 'date', 'Followup Date', 0, 0, 1, 1, 1, 1, '{\"display\":{\"width\":\"6\"}}', 24),
-(280, 40, 'fee', 'text', 'Fee', 0, 0, 1, 1, 1, 1, '{\"display\":{\"width\":\"6\"}}', 25),
+(269, 40, 'consultation_belongsto_user_relationship', 'relationship', 'Lead Clinician', 0, 1, 1, 1, 1, 1, '{\"display\":{\"width\":\"5\"},\"validation\":{\"rule\":\"required\"},\"model\":\"App\\\\User\",\"table\":\"users\",\"type\":\"belongsTo\",\"column\":\"lead_clinician_id\",\"key\":\"id\",\"label\":\"name\",\"pivot_table\":\"batteries\",\"pivot\":\"0\",\"taggable\":\"0\"}', 5),
+(270, 40, 'lead_clinician_id', 'hidden', 'Lead Clinician Id', 0, 0, 1, 1, 1, 1, '{}', 9),
+(271, 40, 'consultation_type', 'select_dropdown', 'Consultation Type', 0, 0, 1, 1, 1, 1, '{\"default\":\"\",\"options\":{\"\":\"\",\"New patient\":\"New patient\",\"Follow up patient\":\"Follow up patient\"},\"display\":{\"width\":\"6\"},\"validation\":{\"rule\":\"required\"}}', 7),
+(272, 40, 'consultation_belongsto_hearing_level_relationship_1', 'relationship', 'Hearing Levels L', 0, 0, 1, 1, 1, 1, '{\"display\":{\"width\":\"6\"},\"model\":\"App\\\\HearingLevel\",\"table\":\"hearing_levels\",\"type\":\"belongsTo\",\"column\":\"hearing_level_l\",\"key\":\"id\",\"label\":\"hearing_level_name\",\"pivot_table\":\"batteries\",\"pivot\":\"0\",\"taggable\":\"0\"}', 14),
+(273, 40, 'consultation_belongsto_diagnosise_relationship', 'relationship', 'Diagnosis R', 0, 1, 1, 1, 1, 1, '{\"display\":{\"width\":\"6\"},\"model\":\"App\\\\Diagnosise\",\"table\":\"diagnosises\",\"type\":\"belongsToMany\",\"column\":\"id\",\"key\":\"id\",\"label\":\"diagnosis_name\",\"pivot_table\":\"consultation_diagnosis_r\",\"pivot\":\"1\",\"taggable\":\"0\"}', 15),
+(274, 40, 'consultation_belongsto_diagnosise_relationship_1', 'relationship', 'Diagnosis L', 0, 1, 1, 1, 1, 1, '{\"display\":{\"width\":\"6\"},\"validation\":{\"rule\":\"required\"},\"model\":\"App\\\\Diagnosise\",\"table\":\"diagnosises\",\"type\":\"belongsToMany\",\"column\":\"id\",\"key\":\"id\",\"label\":\"diagnosis_name\",\"pivot_table\":\"consultation_diagnosis_l\",\"pivot\":\"1\",\"taggable\":\"0\"}', 16),
+(275, 40, 'consultation_belongsto_item_relationship', 'relationship', 'Manufacter / Model R', 0, 1, 1, 1, 1, 1, '{\"display\":{\"width\":\"6\"},\"legend\":{\"text\":\"Hearing AID (FITTING)\"},\"model\":\"App\\\\Item\",\"table\":\"items\",\"type\":\"belongsTo\",\"column\":\"manufacturer_r\",\"key\":\"id\",\"label\":\"item_name\",\"pivot_table\":\"batteries\",\"pivot\":\"0\",\"taggable\":\"0\"}', 19),
+(276, 40, 'consultation_belongsto_item_relationship_1', 'relationship', 'Manufacter / Model L', 0, 1, 1, 1, 1, 1, '{\"display\":{\"width\":\"6\"},\"model\":\"App\\\\Item\",\"table\":\"items\",\"type\":\"belongsTo\",\"column\":\"manufacturer_l\",\"key\":\"id\",\"label\":\"item_name\",\"pivot_table\":\"batteries\",\"pivot\":\"0\",\"taggable\":\"0\"}', 20),
+(277, 40, 'follow_up', 'select_dropdown', 'Follow Up', 0, 0, 1, 1, 1, 1, '{\"default\":\"\",\"options\":{\"\":\"\",\"No follow up - no further action\":\"No follow up - no further action\",\"No follow up - resolved\":\"No follow up - resolved\",\"2\\/52 Follow up\":\"2\\/52 Follow up\",\"1\\/12 Follow up\":\"1\\/12 Follow up\",\"3\\/12 Follow up\":\"3\\/12 Follow up\",\"6\\/12 Follow up\":\"6\\/12 Follow up\"},\"display\":{\"width\":\"6\"},\"legend\":{\"text\":\"Followup \\/ Referral\"}}', 23),
+(278, 40, 'referral', 'select_dropdown', 'Referral', 0, 0, 1, 1, 1, 1, '{\"default\":\"\",\"options\":{\"\":\"\",\"No referral\":\"No referral\",\"ORL\":\"ORL\",\"ORL - regarding surgery\":\"ORL - regarding surgery\",\"SLT\":\"SLT\",\"Child mental health\":\"Child mental health\",\"Cleft lip\\/palate\":\"Cleft lip\\/palate\"},\"display\":{\"width\":\"6\"},\"validation\":{\"rule\":\"required\"}}', 24),
+(279, 40, 'followup_date', 'date', 'Followup Date', 0, 0, 1, 1, 1, 1, '{\"display\":{\"width\":\"6\"}}', 25),
+(280, 40, 'fee', 'text', 'Fee', 0, 0, 1, 1, 1, 1, '{\"display\":{\"width\":\"6\"}}', 26),
 (281, 40, 'hearing_level_l', 'hidden', 'Hearing Level L', 0, 0, 1, 1, 1, 1, '{}', 29),
 (282, 40, 'hearing_level_r', 'hidden', 'Hearing Level R', 0, 0, 1, 1, 1, 1, '{}', 30),
-(283, 40, 'diagnosis_r', 'hidden', 'Diagnosis R', 0, 0, 1, 1, 1, 1, '{}', 26),
-(284, 40, 'diagnosis_l', 'hidden', 'Diagnosis L', 0, 0, 1, 1, 1, 1, '{}', 27),
-(285, 40, 'condition_r', 'multiple_checkbox', 'Condition R', 0, 0, 1, 1, 1, 1, '{\"checked\":false,\"options\":{\"new\":\"New\",\"recon\":\"Recon\",\"old\":\"old\"},\"display\":{\"width\":\"6\"}}', 20),
-(286, 40, 'condition_l', 'multiple_checkbox', 'Condition L', 0, 0, 1, 1, 1, 1, '{\"checked\":false,\"options\":{\"new\":\"New\",\"recon\":\"Recon\",\"old\":\"old\"},\"display\":{\"width\":\"6\"}}', 21);
+(283, 40, 'diagnosis_r', 'hidden', 'Diagnosis R', 0, 0, 1, 1, 1, 1, '{}', 27),
+(284, 40, 'diagnosis_l', 'hidden', 'Diagnosis L', 0, 0, 1, 1, 1, 1, '{}', 28),
+(285, 40, 'condition_r', 'multiple_checkbox', 'Condition R', 0, 0, 1, 1, 1, 1, '{\"checked\":false,\"options\":{\"new\":\"New\",\"recon\":\"Recon\",\"old\":\"old\"},\"display\":{\"width\":\"6\"},\"validation\":{\"rule\":\"required\"}}', 21),
+(286, 40, 'condition_l', 'multiple_checkbox', 'Condition L', 0, 0, 1, 1, 1, 1, '{\"checked\":false,\"options\":{\"new\":\"New\",\"recon\":\"Recon\",\"old\":\"old\"},\"display\":{\"width\":\"6\"},\"validation\":{\"rule\":\"required\"}}', 22);
 
 -- --------------------------------------------------------
 
@@ -1019,7 +1038,7 @@ INSERT INTO `data_types` (`id`, `name`, `slug`, `display_name_singular`, `displa
 (34, 'cities', 'cities', 'City', 'Cities', 'voyager-search', 'App\\City', NULL, NULL, NULL, 1, 0, '{\"order_column\":null,\"order_display_column\":null,\"order_direction\":\"asc\",\"default_search_key\":null,\"scope\":null}', '2019-12-13 01:43:15', '2019-12-13 01:45:01'),
 (35, 'districts', 'districts', 'District', 'Districts', NULL, 'App\\District', NULL, NULL, NULL, 1, 0, '{\"order_column\":null,\"order_display_column\":null,\"order_direction\":\"asc\",\"default_search_key\":null,\"scope\":null}', '2019-12-18 07:18:48', '2019-12-18 07:23:34'),
 (39, 'consultation', 'consultation', 'Consultation', 'Consultations', NULL, 'App\\Consultation', NULL, NULL, NULL, 1, 0, '{\"order_column\":null,\"order_display_column\":null,\"order_direction\":\"asc\",\"default_search_key\":null}', '2020-02-23 09:12:51', '2020-02-23 09:12:51'),
-(40, 'consultations', 'consultations', 'Consultation', 'Consultations', NULL, 'App\\Consultation', NULL, NULL, NULL, 1, 0, '{\"order_column\":null,\"order_display_column\":null,\"order_direction\":\"asc\",\"default_search_key\":null,\"scope\":null}', '2020-02-23 09:53:52', '2020-03-08 08:29:58'),
+(40, 'consultations', 'consultations', 'Consultation', 'Consultations', NULL, 'App\\Consultation', NULL, NULL, NULL, 1, 0, '{\"order_column\":null,\"order_display_column\":null,\"order_direction\":\"asc\",\"default_search_key\":null,\"scope\":null}', '2020-02-23 09:53:52', '2020-03-12 00:29:14'),
 (42, 'batteries', 'batteries', 'Battery', 'Batteries', NULL, 'App\\Battery', NULL, NULL, NULL, 1, 0, '{\"order_column\":null,\"order_display_column\":null,\"order_direction\":\"asc\",\"default_search_key\":null,\"scope\":null}', '2020-03-05 07:27:21', '2020-03-05 07:41:40');
 
 -- --------------------------------------------------------
@@ -7270,37 +7289,37 @@ ALTER TABLE `communes`
 -- AUTO_INCREMENT for table `consultations`
 --
 ALTER TABLE `consultations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `consultation_diagnosis_l`
 --
 ALTER TABLE `consultation_diagnosis_l`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `consultation_diagnosis_r`
 --
 ALTER TABLE `consultation_diagnosis_r`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `consultation_hearing_assessments`
 --
 ALTER TABLE `consultation_hearing_assessments`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `consultation_rehabilitation`
 --
 ALTER TABLE `consultation_rehabilitation`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `consultation_treatment`
 --
 ALTER TABLE `consultation_treatment`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `data_rows`

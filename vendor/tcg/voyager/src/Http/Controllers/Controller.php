@@ -181,7 +181,12 @@ abstract class Controller extends BaseController
         foreach ($fieldsWithValidationRules as $field) {
             $fieldRules = $field->details->validation->rule;
             $fieldName = $field->field;
-
+			
+			if($field->type =='relationship'){
+				$fieldName =$field->details->column;
+						
+			}
+			
             // Show the field's display name on the error message
             if (!empty($field->display_name)) {
                 $customAttributes[$fieldName] = $field->getTranslatedAttribute('display_name');

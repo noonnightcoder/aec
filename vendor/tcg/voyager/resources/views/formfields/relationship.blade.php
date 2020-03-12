@@ -35,6 +35,13 @@
 
                     @if(!$row->required)
                         <option value="">{{__('voyager::generic.none')}}</option>
+					@php
+						if(old($options->column)){
+							echo '<option value="'.old($options->column).'" selected="selected" >'.old($options->column).'</option>';
+							
+						}
+					@endphp
+					
                     @endif
 
                     @foreach($query as $relationshipData)
