@@ -26,4 +26,6 @@ Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
 	Route::get('json-patient/{id}','GeneralController@patient');
 	Route::get('json-manufacturer/{id}','GeneralController@manufacturer');
+	Route::any('reporting','GeneralController@reporting');
+	Route::post('export','GeneralController@export');
 });

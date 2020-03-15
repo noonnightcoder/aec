@@ -8,6 +8,9 @@ use App\Referral;
 use App\Item;
 use App\Brand;
 use App\ItemType;
+use Validator;
+use \Excel;
+use App\Exports\ReportExport;
 
 
 class GeneralController extends Controller
@@ -43,5 +46,34 @@ class GeneralController extends Controller
 		$out['type_name'] = $type->type_name;
         return json_encode($out);
     }
+	
+	public function reporting() 
+    {
+		
+		return view('reporting');
+    }
+	
+	
+	public function export(Request $request) 
+    {
+		 $validator = Validator::make($request->all(), [
+            'title' => 'required',
+            'to' => 'required',
+            'from' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('admin/reporting')
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+		
+		$export = new ReportExport();
+		$export->data = $request->all();
+		
+		return Excel::download($export, 'rpt_outreach.xlsx');
+    }
+	
+	
 
 }

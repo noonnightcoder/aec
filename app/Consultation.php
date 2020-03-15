@@ -8,4 +8,13 @@ class Consultation extends Model
 {
     //
 	public $timestamps = false;
+	
+	public function patient()
+	{
+		return $this->belongsTo('App\Patient', 'patient_id');
+	}
+	
+	
+	
+	
 }
