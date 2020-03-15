@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 12, 2020 at 06:48 AM
+-- Generation Time: Mar 15, 2020 at 04:43 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.2.27
 
@@ -32,16 +32,17 @@ CREATE TABLE `batteries` (
   `id` int(10) UNSIGNED NOT NULL,
   `collection_date` date DEFAULT NULL,
   `batteries` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `clinic_id` int(11) DEFAULT NULL
+  `clinic_id` int(11) DEFAULT NULL,
+  `patient_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `batteries`
 --
 
-INSERT INTO `batteries` (`id`, `collection_date`, `batteries`, `clinic_id`) VALUES
-(1, '2020-03-12', 'no', 5),
-(2, NULL, 'yes', NULL);
+INSERT INTO `batteries` (`id`, `collection_date`, `batteries`, `clinic_id`, `patient_id`) VALUES
+(1, '2020-03-12', 'no', 5, 439),
+(2, NULL, 'yes', NULL, 436);
 
 -- --------------------------------------------------------
 
@@ -355,8 +356,9 @@ INSERT INTO `consultations` (`id`, `consultation_date`, `post_surgery`, `hearing
 (12, '2020-03-19', 'yes', 'yes', NULL, '1', '4', '{\"old\":\"old\"}', 438, 1, 'Follow up patient', '1/12 Follow up', 'Child mental health', '2020-03-20', '778', 3, 3, NULL, NULL, '{\"new\":\"new\",\"old\":\"old\"}'),
 (13, '2020-03-13', 'yes', 'yes', 'sas', '5', '3', '{\"old\":\"old\"}', 436, 5, 'Follow up patient', NULL, 'SLT', '2020-03-19', NULL, NULL, 2, NULL, NULL, '{\"recon\":\"recon\"}'),
 (14, '2020-03-20', 'yes', 'yes', 'asas', NULL, NULL, '{\"recon\":\"recon\"}', 435, 4, 'Follow up patient', NULL, 'SLT', NULL, NULL, NULL, NULL, NULL, NULL, '{\"old\":\"old\"}'),
-(15, '2020-03-13', 'yes', 'yes', 'adasd', NULL, NULL, '{\"old\":\"old\"}', 438, 4, 'Follow up patient', NULL, 'Child mental health', NULL, NULL, 4, 4, NULL, NULL, '{\"new\":\"new\"}'),
-(16, '2020-03-13', 'yes', 'yes', 'hi', '2', '2', '{\"old\":\"old\"}', 101, 3, 'Follow up patient', NULL, 'SLT', '2020-03-13', '778', 1, 2, NULL, NULL, '{\"new\":\"new\"}');
+(15, '2020-03-13', 'yes', 'yes', 'adasd', NULL, NULL, '{\"old\":\"old\"}', 447, 4, 'Follow up patient', NULL, 'Child mental health', NULL, NULL, 4, 4, NULL, NULL, '{\"new\":\"new\"}'),
+(16, '2020-03-13', 'yes', 'yes', 'hi', '2', '2', '{\"old\":\"old\"}', 101, 3, 'Follow up patient', NULL, 'SLT', '2020-03-13', '778', 1, 2, NULL, NULL, '{\"new\":\"new\"}'),
+(17, '2020-03-17', 'yes', 'yes', 'ok', '1', '4', '{\"new\":\"new\"}', 447, 2, 'Follow up patient', 'No follow up - resolved', 'SLT', '2020-03-14', '122', 2, 2, NULL, NULL, '{\"new\":\"new\"}');
 
 -- --------------------------------------------------------
 
@@ -381,7 +383,8 @@ INSERT INTO `consultation_diagnosis_l` (`id`, `consultation_id`, `diagnosise_id`
 (4, 13, 3),
 (5, 14, 4),
 (6, 15, 3),
-(7, 16, 1);
+(7, 16, 1),
+(8, 17, 19);
 
 -- --------------------------------------------------------
 
@@ -405,7 +408,9 @@ INSERT INTO `consultation_diagnosis_r` (`id`, `consultation_id`, `diagnosise_id`
 (3, 13, 2),
 (4, 14, 2),
 (5, 15, 3),
-(6, 16, 1);
+(6, 16, 1),
+(7, 17, 3),
+(8, 16, 2);
 
 -- --------------------------------------------------------
 
@@ -452,7 +457,8 @@ INSERT INTO `consultation_rehabilitation` (`id`, `consultation_id`, `rehabilitat
 (12, 14, 3),
 (13, 15, 3),
 (14, 15, 1),
-(15, 16, 2);
+(15, 16, 2),
+(16, 17, 5);
 
 -- --------------------------------------------------------
 
@@ -475,7 +481,8 @@ INSERT INTO `consultation_treatment` (`id`, `consultation_id`, `treatment_id`) V
 (12, 13, 2),
 (13, 14, 2),
 (14, 15, 3),
-(15, 16, 2);
+(15, 16, 2),
+(16, 17, 2);
 
 -- --------------------------------------------------------
 
@@ -966,16 +973,16 @@ INSERT INTO `data_rows` (`id`, `data_type_id`, `field`, `type`, `display_name`, 
 (261, 40, 'consultation_belongsto_patient_relationship', 'relationship', 'Patient IDs', 0, 1, 1, 1, 1, 1, '{\"display\":{\"width\":\"2\"},\"validation\":{\"rule\":\"required\"},\"model\":\"App\\\\Patient\",\"table\":\"patients\",\"type\":\"belongsTo\",\"column\":\"patient_id\",\"key\":\"id\",\"label\":\"id\",\"pivot_table\":\"brands\",\"pivot\":\"0\",\"taggable\":\"0\"}', 3),
 (262, 40, 'patient_id', 'hidden', 'Patient Id', 0, 0, 1, 1, 1, 1, '{}', 2),
 (263, 42, 'id', 'text', 'Id', 1, 0, 0, 0, 0, 0, '{}', 1),
-(265, 42, 'collection_date', 'date', 'Collection Date', 0, 1, 1, 1, 1, 1, '{}', 4),
-(266, 42, 'batteries', 'select_dropdown', 'Batteries', 0, 1, 1, 1, 1, 1, '{\"default\":\"yes\",\"options\":{\"yes\":\"Yes\",\"no\":\"No\"}}', 5),
-(267, 42, 'battery_belongsto_clinic_relationship', 'relationship', 'Clinics', 0, 1, 1, 1, 1, 1, '{\"model\":\"App\\\\Clinic\",\"table\":\"clinics\",\"type\":\"belongsTo\",\"column\":\"clinic_id\",\"key\":\"id\",\"label\":\"clinic_name\",\"pivot_table\":\"batteries\",\"pivot\":\"0\",\"taggable\":\"0\"}', 2),
-(268, 42, 'clinic_id', 'text', 'Clinic Id', 0, 1, 1, 1, 1, 1, '{}', 4),
+(265, 42, 'collection_date', 'date', 'Collection Date', 0, 1, 1, 1, 1, 1, '{}', 6),
+(266, 42, 'batteries', 'select_dropdown', 'Batteries', 0, 1, 1, 1, 1, 1, '{\"default\":\"yes\",\"options\":{\"yes\":\"Yes\",\"no\":\"No\"}}', 7),
+(267, 42, 'battery_belongsto_clinic_relationship', 'relationship', 'Clinics', 0, 1, 1, 1, 1, 1, '{\"model\":\"App\\\\Clinic\",\"table\":\"clinics\",\"type\":\"belongsTo\",\"column\":\"clinic_id\",\"key\":\"id\",\"label\":\"clinic_name\",\"pivot_table\":\"batteries\",\"pivot\":\"0\",\"taggable\":\"0\"}', 4),
+(268, 42, 'clinic_id', 'text', 'Clinic Id', 0, 1, 1, 1, 1, 1, '{}', 5),
 (269, 40, 'consultation_belongsto_user_relationship', 'relationship', 'Lead Clinician', 0, 1, 1, 1, 1, 1, '{\"display\":{\"width\":\"5\"},\"validation\":{\"rule\":\"required\"},\"model\":\"App\\\\User\",\"table\":\"users\",\"type\":\"belongsTo\",\"column\":\"lead_clinician_id\",\"key\":\"id\",\"label\":\"name\",\"pivot_table\":\"batteries\",\"pivot\":\"0\",\"taggable\":\"0\"}', 5),
 (270, 40, 'lead_clinician_id', 'hidden', 'Lead Clinician Id', 0, 0, 1, 1, 1, 1, '{}', 9),
 (271, 40, 'consultation_type', 'select_dropdown', 'Consultation Type', 0, 0, 1, 1, 1, 1, '{\"default\":\"\",\"options\":{\"\":\"\",\"New patient\":\"New patient\",\"Follow up patient\":\"Follow up patient\"},\"display\":{\"width\":\"6\"},\"validation\":{\"rule\":\"required\"}}', 7),
 (272, 40, 'consultation_belongsto_hearing_level_relationship_1', 'relationship', 'Hearing Levels L', 0, 0, 1, 1, 1, 1, '{\"display\":{\"width\":\"6\"},\"model\":\"App\\\\HearingLevel\",\"table\":\"hearing_levels\",\"type\":\"belongsTo\",\"column\":\"hearing_level_l\",\"key\":\"id\",\"label\":\"hearing_level_name\",\"pivot_table\":\"batteries\",\"pivot\":\"0\",\"taggable\":\"0\"}', 14),
-(273, 40, 'consultation_belongsto_diagnosise_relationship', 'relationship', 'Diagnosis R', 0, 1, 1, 1, 1, 1, '{\"display\":{\"width\":\"6\"},\"model\":\"App\\\\Diagnosise\",\"table\":\"diagnosises\",\"type\":\"belongsToMany\",\"column\":\"id\",\"key\":\"id\",\"label\":\"diagnosis_name\",\"pivot_table\":\"consultation_diagnosis_r\",\"pivot\":\"1\",\"taggable\":\"0\"}', 15),
-(274, 40, 'consultation_belongsto_diagnosise_relationship_1', 'relationship', 'Diagnosis L', 0, 1, 1, 1, 1, 1, '{\"display\":{\"width\":\"6\"},\"validation\":{\"rule\":\"required\"},\"model\":\"App\\\\Diagnosise\",\"table\":\"diagnosises\",\"type\":\"belongsToMany\",\"column\":\"id\",\"key\":\"id\",\"label\":\"diagnosis_name\",\"pivot_table\":\"consultation_diagnosis_l\",\"pivot\":\"1\",\"taggable\":\"0\"}', 16),
+(273, 40, 'consultation_belongsto_diagnosise_relationship', 'relationship', 'Diagnosis R', 0, 1, 1, 1, 1, 1, '{\"display\":{\"width\":\"6\"},\"model\":\"App\\\\Diagnosise\",\"table\":\"diagnosises\",\"type\":\"belongsToMany\",\"column\":\"id\",\"key\":\"id\",\"label\":\"diagnosis_code\",\"pivot_table\":\"consultation_diagnosis_r\",\"pivot\":\"1\",\"taggable\":\"0\"}', 15),
+(274, 40, 'consultation_belongsto_diagnosise_relationship_1', 'relationship', 'Diagnosis L', 0, 1, 1, 1, 1, 1, '{\"display\":{\"width\":\"6\"},\"validation\":{\"rule\":\"required\"},\"model\":\"App\\\\Diagnosise\",\"table\":\"diagnosises\",\"type\":\"belongsToMany\",\"column\":\"id\",\"key\":\"id\",\"label\":\"diagnosis_code\",\"pivot_table\":\"consultation_diagnosis_l\",\"pivot\":\"1\",\"taggable\":\"0\"}', 16),
 (275, 40, 'consultation_belongsto_item_relationship', 'relationship', 'Manufacter / Model R', 0, 1, 1, 1, 1, 1, '{\"display\":{\"width\":\"6\"},\"legend\":{\"text\":\"Hearing AID (FITTING)\"},\"model\":\"App\\\\Item\",\"table\":\"items\",\"type\":\"belongsTo\",\"column\":\"manufacturer_r\",\"key\":\"id\",\"label\":\"item_name\",\"pivot_table\":\"batteries\",\"pivot\":\"0\",\"taggable\":\"0\"}', 19),
 (276, 40, 'consultation_belongsto_item_relationship_1', 'relationship', 'Manufacter / Model L', 0, 1, 1, 1, 1, 1, '{\"display\":{\"width\":\"6\"},\"model\":\"App\\\\Item\",\"table\":\"items\",\"type\":\"belongsTo\",\"column\":\"manufacturer_l\",\"key\":\"id\",\"label\":\"item_name\",\"pivot_table\":\"batteries\",\"pivot\":\"0\",\"taggable\":\"0\"}', 20),
 (277, 40, 'follow_up', 'select_dropdown', 'Follow Up', 0, 0, 1, 1, 1, 1, '{\"default\":\"\",\"options\":{\"\":\"\",\"No follow up - no further action\":\"No follow up - no further action\",\"No follow up - resolved\":\"No follow up - resolved\",\"2\\/52 Follow up\":\"2\\/52 Follow up\",\"1\\/12 Follow up\":\"1\\/12 Follow up\",\"3\\/12 Follow up\":\"3\\/12 Follow up\",\"6\\/12 Follow up\":\"6\\/12 Follow up\"},\"display\":{\"width\":\"6\"},\"legend\":{\"text\":\"Followup \\/ Referral\"}}', 23),
@@ -987,7 +994,9 @@ INSERT INTO `data_rows` (`id`, `data_type_id`, `field`, `type`, `display_name`, 
 (283, 40, 'diagnosis_r', 'hidden', 'Diagnosis R', 0, 0, 1, 1, 1, 1, '{}', 27),
 (284, 40, 'diagnosis_l', 'hidden', 'Diagnosis L', 0, 0, 1, 1, 1, 1, '{}', 28),
 (285, 40, 'condition_r', 'multiple_checkbox', 'Condition R', 0, 0, 1, 1, 1, 1, '{\"checked\":false,\"options\":{\"new\":\"New\",\"recon\":\"Recon\",\"old\":\"old\"},\"display\":{\"width\":\"6\"},\"validation\":{\"rule\":\"required\"}}', 21),
-(286, 40, 'condition_l', 'multiple_checkbox', 'Condition L', 0, 0, 1, 1, 1, 1, '{\"checked\":false,\"options\":{\"new\":\"New\",\"recon\":\"Recon\",\"old\":\"old\"},\"display\":{\"width\":\"6\"},\"validation\":{\"rule\":\"required\"}}', 22);
+(286, 40, 'condition_l', 'multiple_checkbox', 'Condition L', 0, 0, 1, 1, 1, 1, '{\"checked\":false,\"options\":{\"new\":\"New\",\"recon\":\"Recon\",\"old\":\"old\"},\"display\":{\"width\":\"6\"},\"validation\":{\"rule\":\"required\"}}', 22),
+(287, 42, 'battery_belongsto_patient_relationship', 'relationship', 'Patient ID', 0, 1, 1, 1, 1, 1, '{\"validation\":{\"rule\":\"required\"},\"model\":\"App\\\\Patient\",\"table\":\"patients\",\"type\":\"belongsTo\",\"column\":\"patient_id\",\"key\":\"id\",\"label\":\"id\",\"pivot_table\":\"batteries\",\"pivot\":\"0\",\"taggable\":\"0\"}', 3),
+(288, 42, 'patient_id', 'hidden', 'Patient Id', 0, 0, 1, 1, 1, 1, '{}', 2);
 
 -- --------------------------------------------------------
 
@@ -1038,8 +1047,8 @@ INSERT INTO `data_types` (`id`, `name`, `slug`, `display_name_singular`, `displa
 (34, 'cities', 'cities', 'City', 'Cities', 'voyager-search', 'App\\City', NULL, NULL, NULL, 1, 0, '{\"order_column\":null,\"order_display_column\":null,\"order_direction\":\"asc\",\"default_search_key\":null,\"scope\":null}', '2019-12-13 01:43:15', '2019-12-13 01:45:01'),
 (35, 'districts', 'districts', 'District', 'Districts', NULL, 'App\\District', NULL, NULL, NULL, 1, 0, '{\"order_column\":null,\"order_display_column\":null,\"order_direction\":\"asc\",\"default_search_key\":null,\"scope\":null}', '2019-12-18 07:18:48', '2019-12-18 07:23:34'),
 (39, 'consultation', 'consultation', 'Consultation', 'Consultations', NULL, 'App\\Consultation', NULL, NULL, NULL, 1, 0, '{\"order_column\":null,\"order_display_column\":null,\"order_direction\":\"asc\",\"default_search_key\":null}', '2020-02-23 09:12:51', '2020-02-23 09:12:51'),
-(40, 'consultations', 'consultations', 'Consultation', 'Consultations', NULL, 'App\\Consultation', NULL, NULL, NULL, 1, 0, '{\"order_column\":null,\"order_display_column\":null,\"order_direction\":\"asc\",\"default_search_key\":null,\"scope\":null}', '2020-02-23 09:53:52', '2020-03-12 00:29:14'),
-(42, 'batteries', 'batteries', 'Battery', 'Batteries', NULL, 'App\\Battery', NULL, NULL, NULL, 1, 0, '{\"order_column\":null,\"order_display_column\":null,\"order_direction\":\"asc\",\"default_search_key\":null,\"scope\":null}', '2020-03-05 07:27:21', '2020-03-05 07:41:40');
+(40, 'consultations', 'consultations', 'Consultation', 'Consultations', NULL, 'App\\Consultation', NULL, NULL, NULL, 1, 0, '{\"order_column\":null,\"order_display_column\":null,\"order_direction\":\"asc\",\"default_search_key\":null,\"scope\":null}', '2020-02-23 09:53:52', '2020-03-15 09:50:34'),
+(42, 'batteries', 'batteries', 'Battery', 'Batteries', NULL, 'App\\Battery', NULL, NULL, NULL, 1, 0, '{\"order_column\":null,\"order_display_column\":null,\"order_direction\":\"asc\",\"default_search_key\":null,\"scope\":null}', '2020-03-05 07:27:21', '2020-03-15 10:35:59');
 
 -- --------------------------------------------------------
 
@@ -2555,7 +2564,7 @@ INSERT INTO `menu_items` (`id`, `menu_id`, `title`, `url`, `target`, `icon_class
 (34, 1, 'Cities', '', '_self', 'voyager-browser', '#000000', 35, 1, '2019-12-13 01:43:15', '2019-12-18 07:18:00', 'voyager.cities.index', 'null'),
 (35, 1, 'Provincial', '', '_self', 'voyager-browser', '#000000', NULL, 7, '2019-12-18 07:17:52', '2019-12-18 07:18:21', NULL, ''),
 (36, 1, 'Districts', '', '_self', 'voyager-browser', '#000000', 35, 2, '2019-12-18 07:18:48', '2019-12-18 07:19:49', 'voyager.districts.index', 'null'),
-(37, 1, 'Consultations', '', '_self', NULL, NULL, NULL, 8, '2020-02-23 09:12:51', '2020-02-23 09:12:51', 'voyager.consultation.index', NULL),
+(37, 1, 'Report', '/admin/reporting', '_self', NULL, '#000000', NULL, 8, '2020-02-23 09:12:51', '2020-03-15 09:55:36', NULL, ''),
 (38, 1, 'Consultations', '', '_self', NULL, NULL, NULL, 9, '2020-02-23 09:53:52', '2020-02-23 09:53:52', 'voyager.consultations.index', NULL),
 (39, 1, 'Batteries', '', '_self', NULL, NULL, NULL, 10, '2020-03-05 07:27:21', '2020-03-05 07:27:21', 'voyager.batteries.index', NULL);
 
@@ -2694,11 +2703,11 @@ INSERT INTO `patients` (`id`, `registration_date`, `family_name`, `given_name`, 
 (101, '2019-09-10', 'Men', 'Vannak', '1900-01-01', '37', 'Female', 'Khmer', 68, 1, '097 71 81 982', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 14, 14, '', NULL, '2019-09-09 17:00:00', NULL, NULL),
 (435, '2019-02-01', 'Khoeun', 'Serey Rotana', '1900-01-01', '40', 'Female', 'Khmer', 68, 1, '012231105', '', NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, 12, 12, '', NULL, '2018-12-23 17:00:00', NULL, NULL),
 (436, '2019-02-20', 'Heng', 'Mean', '1956-10-05', '62', 'Male', 'Khmer', 68, 1, '010 36 08 08', '', NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, 15, 15, '', NULL, '2019-02-19 17:00:00', NULL, NULL),
-(438, '2019-02-22', 'Sor', 'Touch', '1900-01-01', '98', 'Female', 'Khmer', 68, 1, '012 46 45 92', '', NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, 15, 15, '', NULL, '2019-02-21 17:00:00', NULL, NULL),
+(438, '2019-02-22', 'Sor', 'Touch', '2019-01-01', '98', 'Female', 'Khmer', 68, 1, '012 46 45 92', '', NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, 15, 15, '', NULL, '2019-02-21 17:00:00', NULL, NULL),
 (439, '2019-03-01', 'Chheng', 'Da Le', '1900-01-01', '35', 'Female', 'Khmer', 68, 1, '012518251', '', NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, 12, 12, '', NULL, '2019-02-28 17:00:00', NULL, NULL),
 (443, '2019-03-18', 'Heng', 'Sorin', '1900-01-01', '57', 'Female', 'Khmer', 68, 1, '096 76 43 499', '', NULL, NULL, NULL, NULL, NULL, NULL, 9, NULL, 16, 16, '', NULL, '2019-03-17 17:00:00', NULL, NULL),
 (444, '2019-03-22', 'Chan', 'Davet', '1900-01-01', '33', 'Female', 'Khmer', 68, 1, '071 57 82 223', '', NULL, NULL, NULL, NULL, NULL, NULL, 9, NULL, 16, 16, '', NULL, '2019-03-21 17:00:00', NULL, NULL),
-(447, '2019-03-28', 'Khiev', 'Thida', '1900-01-01', '35', 'Female', 'Khmer', 68, 1, '012 34 74 95', '', NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, 15, 15, '', NULL, '2019-03-27 17:00:00', NULL, NULL),
+(447, '2019-03-28', 'Khiev', 'Thida', '2010-01-01', '35', 'Female', 'Khmer', 68, 1, '012 34 74 95', '', NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, 15, 15, '', NULL, '2019-03-27 17:00:00', NULL, NULL),
 (461, '2019-03-29', 'May', 'Raksmey', '1900-01-01', '35', 'Female', 'Khmer', 68, 1, '012 71 98 19', '', NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, 16, 16, '', NULL, '2019-03-28 17:00:00', NULL, NULL),
 (525, '2019-04-03', 'Khouch', 'Chan Tha', '1900-01-01', '62', 'Male', 'Khmer', 68, 1, '089 45 20 32', '', NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, 16, 16, '', NULL, '2019-04-02 17:00:00', NULL, NULL),
 (526, '2019-04-08', 'Vuth', 'Sina', '2005-02-01', '14', 'Female', 'Khmer', 5, 1, '088 50 70 460', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 16, 16, '', NULL, '2019-04-07 17:00:00', NULL, NULL),
@@ -7058,8 +7067,7 @@ ALTER TABLE `countries`
 -- Indexes for table `data_rows`
 --
 ALTER TABLE `data_rows`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `data_rows_data_type_id_foreign` (`data_type_id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `data_types`
@@ -7289,19 +7297,19 @@ ALTER TABLE `communes`
 -- AUTO_INCREMENT for table `consultations`
 --
 ALTER TABLE `consultations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `consultation_diagnosis_l`
 --
 ALTER TABLE `consultation_diagnosis_l`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `consultation_diagnosis_r`
 --
 ALTER TABLE `consultation_diagnosis_r`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `consultation_hearing_assessments`
@@ -7313,19 +7321,19 @@ ALTER TABLE `consultation_hearing_assessments`
 -- AUTO_INCREMENT for table `consultation_rehabilitation`
 --
 ALTER TABLE `consultation_rehabilitation`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `consultation_treatment`
 --
 ALTER TABLE `consultation_treatment`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `data_rows`
 --
 ALTER TABLE `data_rows`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=287;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=289;
 
 --
 -- AUTO_INCREMENT for table `data_types`
