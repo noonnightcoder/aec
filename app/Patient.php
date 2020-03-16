@@ -14,4 +14,13 @@ class Patient extends Model
     	$this->city_id = 1;
     	parent::__construct($attributes);
 	}
+	
+	public function getAgeAttribute($value)
+    {
+		$birthdate= new \DateTime($value);
+		$today = new \DateTime();	
+		$age = $birthdate->diff($today)->y;
+		
+        return $age;
+    }
 }

@@ -10,7 +10,8 @@ use App\Brand;
 use App\ItemType;
 use Validator;
 use \Excel;
-use App\Exports\ReportExport;
+use App\Exports\DiagnosisReport;
+use App\Exports\PatientReport;
 
 
 class GeneralController extends Controller
@@ -47,14 +48,21 @@ class GeneralController extends Controller
         return json_encode($out);
     }
 	
-	public function reporting() 
+	public function diagnosis_report() 
     {
 		
-		return view('reporting');
+		return view('diagnosis_reporting');
+    }
+	
+	public function patient_report() 
+    {
+		
+		return view('patient_reporting');
     }
 	
 	
-	public function export(Request $request) 
+	
+	public function diagnosis_export(Request $request) 
     {
 		 $validator = Validator::make($request->all(), [
             'title' => 'required',
@@ -63,15 +71,36 @@ class GeneralController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect('admin/reporting')
+            return redirect('admin/report/diagnosis')
                         ->withErrors($validator)
                         ->withInput();
         }
 		
-		$export = new ReportExport();
+		$export = new DiagnosisReport();
 		$export->data = $request->all();
 		
 		return Excel::download($export, 'rpt_outreach.xlsx');
+    }
+	
+	
+	public function patient_export(Request $request) 
+    {
+		 $validator = Validator::make($request->all(), [
+            'title' => 'required',
+            'to' => 'required',
+            'from' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('admin/report/patient')
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+		
+		$export = new PatientReport();
+		$export->data = $request->all();
+		
+		return Excel::download($export, 'rpt_list_followup_patient.xlsx');
     }
 	
 	

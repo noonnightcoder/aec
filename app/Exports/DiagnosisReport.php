@@ -8,7 +8,7 @@ use App\Diagnosise;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 
-class ReportExport implements FromView
+class DiagnosisReport implements FromView
 {
 	
     public function view(): View
@@ -105,6 +105,6 @@ class ReportExport implements FromView
 		$data['info'] = $info;
 		$data['diagnosis'] = $diagnosis;
 		
-        return view('exports',$data);
+        return view('export/diagnosis',$data);
     }
 }

@@ -23,9 +23,11 @@ Route::get('json-communes/{id}','ProvinceController@communes');
 Route::get('json-villages/{id}','ProvinceController@villages');
 
 Route::group(['prefix' => 'admin'], function () {
-    Voyager::routes();
+	Voyager::routes();
 	Route::get('json-patient/{id}','GeneralController@patient');
 	Route::get('json-manufacturer/{id}','GeneralController@manufacturer');
-	Route::any('reporting','GeneralController@reporting');
-	Route::post('export','GeneralController@export');
+	Route::any('report/diagnosis','GeneralController@diagnosis_report');
+	Route::any('report/patient','GeneralController@patient_report');
+	Route::post('export/diagnosis','GeneralController@diagnosis_export');
+	Route::post('export/patient','GeneralController@patient_export');
 });

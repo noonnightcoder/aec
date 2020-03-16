@@ -9,8 +9,7 @@
 
 @section('page_header')
     <h1 class="page-title">
-      
-       Report
+      Diagnosis Report
     </h1>
     @include('voyager::multilingual.language-selector')
 @stop
@@ -22,9 +21,7 @@
 
                 <div class="panel panel-bordered">
                     <!-- form start -->
-                    <form role="form"
-                            action="{{url('admin/export')}}"
-                            method="POST">
+                    <form role="form" action="{{url('admin/export/diagnosis')}}" method="POST">
                        
                         <!-- CSRF TOKEN -->
                         {{ csrf_field() }}
@@ -60,7 +57,7 @@
 
                         <div class="panel-footer">
                             @section('submit-buttons')
-						
+					
                                 <button type="submit" class="btn btn-primary save">Export</button>
 						
                             @stop
