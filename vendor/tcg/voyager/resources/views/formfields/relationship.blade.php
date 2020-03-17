@@ -22,7 +22,6 @@
 
             @else
 
-			{{old($options->column)}}
                 <select
                     class="form-control select2-ajax" name="{{ $options->column }}"
                     data-get-items-route="{{route('voyager.' . $dataType->slug.'.relation')}}"
@@ -31,22 +30,20 @@
                 >
                     @php
                         $model = app($options->model);
-                        $query = $model::where($options->key, $dataTypeContent->{$options->column})->get();
+						
+						$current_val = old($options->column)?old($options->column):$dataTypeContent->{$options->column};
+						$query = $model::where($options->key,$current_val)->get();
+						
                     @endphp
 
-                    @if(!$row->required)
+                
                         <option value="">{{__('voyager::generic.none')}}</option>
-					@php
-						if(old($options->column)){
-							echo '<option value="'.old($options->column).'" selected="selected" >'.old($options->column).'</option>';
-							
-						}
-					@endphp
 					
-                    @endif
+					
+					
 
                     @foreach($query as $relationshipData)
-                        <option value="{{ $relationshipData->{$options->key} }}" @if(old($options->column)== $relationshipData->{$options->key}){{ 'selected="selected"' }}@endif>{{ $relationshipData->{$options->label} }}</option>
+                        <option value="{{ $relationshipData->{$options->key} }}" @if($current_val == $relationshipData->{$options->key}){{ 'selected="selected"' }}@endif>{{ $relationshipData->{$options->label} }}</option>
                     @endforeach
                 </select>
 
@@ -175,6 +172,9 @@
                             $selected_values = isset($dataTypeContent) ? $dataTypeContent->belongsToMany($options->model, $options->pivot_table)->get()->map(function ($item, $key) use ($options) {
                                 return $item->{$options->key};
                             })->all() : array();
+							
+							if(old($relationshipField))
+								$selected_values = old($relationshipField);
                             $relationshipOptions = app($options->model)->all();
                         @endphp
 
