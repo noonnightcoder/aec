@@ -41,16 +41,16 @@
 								<div class="row">
 								<div class="form-group  col-md-12 ">
                                         <label class="control-label" for="title">Title</label>
-                                        <input type="text" class="form-control" name="title" placeholder="Rerport Title" value="" >
+                                        <input type="text" class="form-control" name="title" placeholder="Rerport Title" value="{{old('title')}}" >
 								</div>
 								
 								<div class="form-group  col-md-6 ">
                                         <label class="control-label" for="start">From</label>
-                                        <input type="date" class="form-control" name="from" placeholder="From" value="" >
+                                        <input type="date" class="form-control" name="from" placeholder="From" value="{{old('from')}}" >
 								</div>
 								<div class="form-group  col-md-6 ">
                                         <label class="control-label" for="to">To</label>
-                                        <input type="date" class="form-control" name="to" placeholder="To" value="" >
+                                        <input type="date" class="form-control" name="to" placeholder="To" value="{{old('to')}}" >
 								</div>
 								</div>
 								
