@@ -32,7 +32,7 @@
 @section('content')
     <div class="page-content edit-add container-fluid">
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-12">
 
                 <div class="panel panel-bordered">
                     <!-- form start -->
