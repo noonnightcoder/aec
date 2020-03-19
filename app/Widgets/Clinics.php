@@ -22,7 +22,7 @@ class Clinics extends AbstractWidget
      */
     public function run()
     {
-        $count = \App\Patient::count();
+        $count = \App\Clinic::count();
         $string = 'Clinic';
 
         return view('voyager::dimmer', array_merge($this->config, [
